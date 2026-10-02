@@ -1,0 +1,1275 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Los Santos BarberStudio · Barbería en Sant Andreu, Barcelona</title>
+<meta name="description" content="Los Santos BarberStudio, tu barbería en Sant Andreu (Barcelona). Cortes fade, arreglo de barba, color y rituales premium. Reserva tu cita online. Carrer de la Tramuntana 48.">
+<meta property="og:title" content="Los Santos BarberStudio · Barbería en Barcelona">
+<meta property="og:description" content="«La excelencia es nuestra tradición». Reserva tu cita online.">
+<meta property="og:type" content="website">
+<!-- PWA: instalable como app -->
+<link rel="manifest" href="./manifest.json">
+<meta name="theme-color" content="#221a12">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Los Santos">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Oswald:wght@400;500;600&family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!-- Firebase (solo se usa si pegas tu configuración más abajo) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HairSalon",
+  "name": "Los Santos BarberStudio",
+  "slogan": "La excelencia es nuestra tradición",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Carrer de la Tramuntana, 48",
+    "addressLocality": "Barcelona",
+    "addressRegion": "Sant Andreu",
+    "postalCode": "08030",
+    "addressCountry": "ES"
+  },
+  "telephone": "+34671262745",
+  "url": "https://www.instagram.com/lossantos_barberstudio/",
+  "aggregateRating": { "@type": "AggregateRating", "ratingValue": "5.0", "reviewCount": "247" },
+  "openingHoursSpecification": [
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"], "opens": "10:00", "closes": "14:00" },
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"], "opens": "15:00", "closes": "20:00" },
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "10:00", "closes": "14:00" },
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "15:00", "closes": "18:00" }
+  ],
+  "priceRange": "€€"
+}
+</script>
+<style>
+:root{
+  --paper:#faf5ea; --paper2:#f3ecda; --card:#fffdf6;
+  --ink:#221a12; --muted:#6f6250; --line:#e4d8bf; --dots:#c9b78d;
+  --red:#b23a2e; --red-dk:#8c2a21; --navy:#22406a; --gold:#a97e1f;
+  --green:#2e7d4f; --amber:#b97e1f;
+  --disp:'Anton',Impact,sans-serif;
+  --serif:'Playfair Display',Georgia,serif;
+  --cond:'Oswald',sans-serif;
+  --sans:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --shadow:0 18px 45px rgba(60,42,20,.12);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::after{content:"";position:fixed;inset:0;z-index:200;pointer-events:none;opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E")}
+img{max-width:100%;display:block}
+a{color:inherit}
+.container{width:min(1140px,92%);margin:0 auto}
+section{padding:88px 0}
+.sec-head{margin-bottom:3rem}
+.sec-no{font-family:var(--disp);font-size:1rem;letter-spacing:.2em;color:var(--red);margin-bottom:.4rem}
+.sec-no::before{content:"—— "}
+.sec-title{font-family:var(--disp);font-size:clamp(2.2rem,5vw,3.4rem);letter-spacing:.01em;text-transform:uppercase;line-height:1.02}
+.sec-title em{font-family:var(--serif);font-style:italic;font-weight:700;text-transform:none;color:var(--red);letter-spacing:0}
+.sec-sub{color:var(--muted);max-width:600px;margin-top:.7rem;font-size:1.02rem}
+
+.pole{height:12px;background:repeating-linear-gradient(-45deg,var(--red) 0 16px,#faf5ea 16px 32px,var(--navy) 32px 48px,#faf5ea 48px 64px);
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.pole-v{width:36px;height:150px;border-radius:18px;border:3px solid var(--ink);
+  background:repeating-linear-gradient(-45deg,var(--red) 0 11px,#fdfaf2 11px 22px,var(--navy) 22px 33px,#fdfaf2 33px 44px);
+  animation:polespin 2.6s linear infinite;position:relative;overflow:hidden;box-shadow:var(--shadow)}
+.pole-v::after{content:"";position:absolute;inset:0;border-radius:14px;
+  background:linear-gradient(105deg,rgba(255,255,255,.55) 0%,rgba(255,255,255,.08) 35%,transparent 55%)}
+@keyframes polespin{to{background-position:0 62.2px}}
+
+/* ---------- header ---------- */
+header{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(250,245,234,.92);backdrop-filter:blur(10px);
+  border-bottom:1px solid transparent;transition:border-color .3s,box-shadow .3s}
+header.scrolled{border-bottom-color:var(--line);box-shadow:0 6px 24px rgba(60,42,20,.08)}
+.nav{display:flex;align-items:center;justify-content:space-between;padding:.7rem 0}
+.brand{display:flex;align-items:center;gap:.75rem;text-decoration:none}
+.stamp-sm{width:48px;height:48px;flex:none}
+.brand-name{font-family:var(--disp);font-size:1.3rem;letter-spacing:.04em;line-height:1}
+.brand-name small{display:block;font-family:var(--cond);font-weight:500;font-size:.62rem;letter-spacing:.34em;color:var(--red);margin-top:2px}
+.nav-links{display:flex;gap:1.9rem;list-style:none;align-items:center}
+.nav-links a{text-decoration:none;font-size:.94rem;font-weight:500;color:var(--ink);opacity:.75;transition:opacity .2s,color .2s}
+.nav-links a:hover,.nav-links a.active{opacity:1;color:var(--red)}
+.btn{display:inline-flex;align-items:center;gap:.5rem;text-decoration:none;font-weight:600;border-radius:999px;
+  padding:.9rem 1.9rem;transition:transform .15s,box-shadow .2s,background .2s;cursor:pointer;border:none;font-size:.98rem;font-family:var(--sans)}
+.btn:hover{transform:translateY(-2px)}
+.btn-red{background:var(--red);color:#fff;box-shadow:0 10px 24px rgba(178,58,46,.32)}
+.btn-red:hover{background:var(--red-dk)}
+.btn-ink{background:var(--ink);color:var(--paper)}
+.btn-ink:hover{background:#3a2d1e}
+.btn-outline{border:1.5px solid var(--ink);color:var(--ink);background:transparent}
+.btn-outline:hover{background:var(--ink);color:var(--paper)}
+.btn-sm{padding:.6rem 1.25rem;font-size:.88rem}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.burger{display:none;background:none;border:none;cursor:pointer;padding:.4rem}
+.burger span{display:block;width:26px;height:2px;background:var(--ink);margin:6px 0;transition:.3s}
+
+/* ---------- hero ---------- */
+.hero{padding:160px 0 84px;position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;top:-140px;right:-140px;width:480px;height:480px;border-radius:50%;
+  background:radial-gradient(circle,rgba(178,58,46,.10),transparent 65%);pointer-events:none}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:3.5rem;align-items:center}
+.eyebrow{font-family:var(--cond);font-weight:600;font-size:.82rem;letter-spacing:.3em;text-transform:uppercase;color:var(--red);margin-bottom:1.1rem}
+.hero-title{font-family:var(--disp);font-size:clamp(3rem,7vw,5.2rem);line-height:.98;letter-spacing:.01em;text-transform:uppercase;margin-bottom:1.1rem}
+.hero-title em{font-family:var(--serif);font-style:italic;font-weight:700;text-transform:none;color:var(--red)}
+.slogan{font-family:var(--serif);font-style:italic;font-size:1.22rem;color:var(--muted);margin-bottom:1.2rem}
+.rating{display:flex;align-items:center;gap:.7rem;margin-bottom:1.1rem;font-size:.95rem;color:var(--muted)}
+.rating .stars{color:var(--gold);letter-spacing:.18em;font-size:1.05rem}
+.rating strong{color:var(--ink)}
+.open-badge{display:inline-flex;align-items:center;gap:.55rem;font-size:.86rem;font-weight:600;
+  padding:.5rem 1.05rem;border-radius:999px;margin-bottom:1.8rem;border:1px solid}
+.open-badge .dot{width:9px;height:9px;border-radius:50%;background:currentColor;animation:pulse 1.6s infinite}
+.open-badge.open{background:rgba(46,125,79,.1);color:var(--green);border-color:rgba(46,125,79,.4)}
+.open-badge.closed{background:rgba(178,58,46,.08);color:var(--red);border-color:rgba(178,58,46,.35)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.hero-cta{display:flex;gap:.9rem;flex-wrap:wrap}
+.hero-meta{display:flex;gap:1.6rem;margin-top:2rem;flex-wrap:wrap}
+.hero-meta div b{font-family:var(--disp);font-size:1.5rem;display:block;letter-spacing:.02em}
+.hero-meta div span{font-size:.82rem;color:var(--muted);font-family:var(--cond);letter-spacing:.18em;text-transform:uppercase}
+.hero-photo{position:relative;justify-self:center}
+.arch{width:min(400px,100%);border-radius:220px 220px 26px 26px;overflow:hidden;border:3px solid var(--ink);box-shadow:var(--shadow)}
+.arch img{width:100%;aspect-ratio:3/4;object-fit:cover}
+.spin-badge{position:absolute;left:-52px;bottom:34px;width:128px;height:128px;filter:drop-shadow(0 10px 20px rgba(60,42,20,.2))}
+.spin-badge .disc{fill:var(--ink)}
+.spin-badge text{font-family:var(--cond);font-size:11.5px;letter-spacing:.18em;fill:var(--paper);font-weight:600}
+.spin-badge .ring{animation:spin 16s linear infinite;transform-origin:64px 64px}
+.spin-badge .sc{stroke:var(--paper);fill:none;stroke-width:2.4}
+@keyframes spin{to{transform:rotate(360deg)}}
+.hero-pole{position:absolute;right:-24px;top:26px}
+
+/* ---------- marquee ---------- */
+.marquee{background:var(--ink);color:var(--paper);overflow:hidden;padding:.9rem 0;border-top:3px solid var(--ink);border-bottom:3px solid var(--ink)}
+.marquee-track{display:inline-flex;gap:2.8rem;white-space:nowrap;width:max-content;animation:marq 28s linear infinite;
+  font-family:var(--disp);font-size:1.3rem;letter-spacing:.05em}
+.marquee-track .r{color:#e0685a}
+@keyframes marq{to{transform:translateX(-50%)}}
+
+/* ---------- servicios ---------- */
+#servicios{background:var(--paper2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.menu{display:grid;grid-template-columns:1fr 1fr;gap:3.2rem 4rem;max-width:1020px;margin:0 auto}
+.menu-cat h3{font-family:var(--disp);font-size:1.25rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink);
+  margin-bottom:1.2rem;display:flex;align-items:center;gap:.9rem}
+.menu-cat h3 .n{color:var(--red)}
+.menu-cat h3::after{content:"";flex:1;height:1px;background:var(--dots)}
+.menu-item{display:flex;align-items:baseline;gap:.7rem;padding:.95rem 0}
+.menu-item + .menu-item{border-top:1px dashed var(--line)}
+.menu-item .info h4{font-family:var(--serif);font-size:1.22rem;font-weight:700}
+.menu-item .info h4 .dur{font-family:var(--sans);font-weight:500;font-size:.82rem;color:var(--muted)}
+.menu-item .info p{font-size:.9rem;color:var(--muted);margin-top:.15rem}
+.menu-item .dots{flex:1;border-bottom:2px dotted var(--dots);transform:translateY(-5px);min-width:20px}
+.menu-item .price{font-family:var(--disp);font-size:1.35rem;letter-spacing:.02em;color:var(--ink);white-space:nowrap}
+.svc-note{text-align:center;color:var(--muted);font-size:.92rem;margin-top:2.8rem;max-width:640px;margin-left:auto;margin-right:auto}
+
+/* ---------- nosotros ---------- */
+.about-grid{display:grid;grid-template-columns:.92fr 1.08fr;gap:4rem;align-items:center}
+.about-photo{position:relative;justify-self:center}
+.about-photo .arch{width:min(360px,100%)}
+.about-photo .pole-v{position:absolute;right:-18px;bottom:40px;height:120px;width:32px}
+.about-txt p{color:var(--muted);margin-bottom:1rem}
+.about-txt p strong{color:var(--ink)}
+.feats{display:grid;grid-template-columns:1fr 1fr;gap:.85rem;margin:1.5rem 0}
+.feat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:.95rem 1.05rem;display:flex;gap:.8rem;align-items:center;font-size:.9rem;font-weight:500}
+.feat svg{width:22px;height:22px;stroke:var(--red);fill:none;stroke-width:1.8;flex:none}
+.ticket{margin-top:1.4rem;border:2px dashed var(--dots);border-radius:14px;padding:1.2rem 1.4rem;background:var(--card);
+  display:flex;gap:1rem;align-items:center;transform:rotate(-.6deg)}
+.ticket svg{width:34px;height:34px;stroke:var(--gold);fill:none;stroke-width:1.6;flex:none}
+.ticket b{font-family:var(--serif)}
+.ticket p{font-size:.9rem;color:var(--muted);margin:0}
+.team{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1.2rem;align-items:center}
+.team .lbl{font-family:var(--cond);font-size:.8rem;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);margin-right:.3rem}
+.team span.chip{background:var(--ink);color:var(--paper);padding:.42rem 1.05rem;border-radius:999px;font-size:.88rem;font-weight:600}
+
+/* ---------- galería ---------- */
+#galeria{background:var(--paper2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.gal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.6rem;align-items:start}
+.gal-item{background:#fffdf6;border:1px solid var(--line);padding:12px 12px 0;box-shadow:var(--shadow);position:relative}
+.gal-item:nth-child(1){transform:rotate(-1.4deg)}
+.gal-item:nth-child(2){transform:rotate(1deg);margin-top:1.2rem}
+.gal-item:nth-child(3){transform:rotate(-.8deg)}
+.gal-item::before{content:"";position:absolute;top:-13px;left:50%;transform:translateX(-50%) rotate(-3deg);
+  width:92px;height:26px;background:rgba(201,183,141,.5);border-left:1px dashed rgba(120,100,70,.4);border-right:1px dashed rgba(120,100,70,.4)}
+.gal-item .ph{overflow:hidden;aspect-ratio:4/5}
+.gal-item img{width:100%;height:100%;object-fit:cover;filter:sepia(.14) contrast(1.04);transition:transform .6s ease,filter .4s}
+.gal-item:hover img{transform:scale(1.05);filter:none}
+.gal-cap{font-family:var(--serif);font-style:italic;text-align:center;color:var(--muted);padding:.8rem .4rem 1rem;font-size:1rem}
+.gal-cta{text-align:center;margin-top:2.4rem}
+
+/* ---------- reserva ---------- */
+.booking{max-width:880px;margin:0 auto;background:var(--card);border:2px solid var(--ink);border-radius:20px;overflow:hidden;box-shadow:var(--shadow)}
+.booking-head{background:var(--ink);color:var(--paper);padding:1.3rem 2rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.booking-head h3{font-family:var(--disp);font-size:1.4rem;letter-spacing:.05em;color:var(--paper)}
+.booking-head .no{font-family:var(--cond);font-size:.78rem;letter-spacing:.26em;color:#cdbf9f;text-transform:uppercase}
+.demo-flag{display:inline-block;font-family:var(--cond);font-size:.72rem;letter-spacing:.2em;background:var(--amber);color:#fff;
+  border-radius:999px;padding:.25rem .8rem;margin-left:.6rem;vertical-align:middle;text-transform:uppercase}
+.b-steps{display:flex;list-style:none;border-bottom:1px solid var(--line);overflow-x:auto}
+.b-steps li{flex:1;display:flex;align-items:center;gap:.6rem;padding:1rem 1.1rem;font-family:var(--cond);font-size:.8rem;white-space:nowrap;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--muted);border-right:1px solid var(--line);cursor:pointer;transition:background .2s}
+.b-steps li:last-child{border-right:none}
+.b-steps li .bn{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--dots);display:grid;place-items:center;
+  font-family:var(--disp);font-size:.85rem;flex:none}
+.b-steps li.active{color:var(--ink);background:rgba(178,58,46,.06)}
+.b-steps li.active .bn{background:var(--red);border-color:var(--red);color:#fff}
+.b-steps li.done .bn{background:var(--green);border-color:var(--green);color:#fff}
+.b-body{padding:2rem}
+.b-panel{display:none}
+.b-panel.show{display:block;animation:fadein .35s ease}
+@keyframes fadein{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.opt{display:flex;align-items:center;gap:1rem;width:100%;text-align:left;background:none;border:1px solid var(--line);
+  border-radius:14px;padding:1.05rem 1.2rem;margin-bottom:.7rem;cursor:pointer;transition:border-color .2s,background .2s;font-family:var(--sans);color:var(--ink)}
+.opt:hover{border-color:var(--red)}
+.opt.sel{border-color:var(--red);background:rgba(178,58,46,.06);box-shadow:inset 4px 0 0 var(--red)}
+.opt .oi{flex:1}
+.opt .oi b{font-family:var(--serif);font-size:1.12rem;display:block}
+.opt .oi span{font-size:.85rem;color:var(--muted)}
+.opt .op{font-family:var(--disp);font-size:1.25rem}
+.opt .go{font-family:var(--disp);color:var(--red);font-size:1.2rem}
+.avatar{width:46px;height:46px;border-radius:50%;background:var(--ink);color:var(--paper);display:grid;place-items:center;
+  font-family:var(--disp);font-size:1.25rem;flex:none}
+.avail{display:flex;align-items:center;gap:.45rem}
+.avail .dot{width:9px;height:9px;border-radius:50%;flex:none}
+.avail .dot.ok{background:var(--green)} .avail .dot.ko{background:var(--red)} .avail .dot.mid{background:var(--amber)}
+.days{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:.7rem}
+.day{border:1px solid var(--line);border-radius:12px;background:none;padding:.8rem .4rem;cursor:pointer;font-family:var(--sans);transition:border-color .2s,background .2s;color:var(--ink)}
+.day:hover{border-color:var(--red)}
+.day.sel{border-color:var(--red);background:rgba(178,58,46,.07);box-shadow:inset 0 -4px 0 var(--red)}
+.day:disabled{opacity:.38;cursor:not-allowed}
+.day .dw{display:block;font-family:var(--cond);font-size:.72rem;letter-spacing:.2em;color:var(--muted);text-transform:uppercase}
+.day .dn{display:block;font-family:var(--disp);font-size:1.5rem;line-height:1.2}
+.day .dm{display:block;font-size:.78rem;color:var(--muted)}
+.hours-grid{display:flex;flex-wrap:wrap;gap:.7rem}
+.hour{border:1px solid var(--line);border-radius:999px;background:none;padding:.65rem 1.25rem;cursor:pointer;
+  font-family:var(--sans);font-weight:600;font-size:.95rem;transition:all .2s;color:var(--ink)}
+.hour:hover{border-color:var(--red);color:var(--red)}
+.hour.sel{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.empty{color:var(--muted);font-style:italic;padding:1rem 0}
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
+.f-field label{display:block;font-family:var(--cond);font-size:.76rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem}
+.f-field input,.f-field textarea,.f-field select{width:100%;border:1.5px solid var(--line);border-radius:12px;padding:.85rem 1rem;
+  font-family:var(--sans);font-size:1rem;background:#fff;color:var(--ink);transition:border-color .2s}
+.f-field input:focus,.f-field textarea:focus,.f-field select:focus{outline:none;border-color:var(--red)}
+.f-field textarea{resize:vertical;min-height:74px}
+.f-field .err{display:none;font-size:.82rem;color:var(--red);margin-top:.3rem}
+.f-field.bad input{border-color:var(--red)}
+.f-field.bad .err{display:block}
+.summary{background:var(--paper2);border:1px dashed var(--dots);border-radius:14px;padding:1.3rem 1.5rem;margin-bottom:1.4rem}
+.summary h4{font-family:var(--disp);letter-spacing:.06em;font-size:1.05rem;margin-bottom:.7rem;text-transform:uppercase}
+.summary dl{display:grid;grid-template-columns:auto 1fr;gap:.35rem 1rem;font-size:.95rem}
+.summary dt{color:var(--muted);font-family:var(--cond);letter-spacing:.12em;text-transform:uppercase;font-size:.78rem;padding-top:.2rem}
+.summary dd{font-weight:600}
+.b-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.6rem;gap:1rem;flex-wrap:wrap}
+.b-back{background:none;border:none;font-family:var(--cond);letter-spacing:.18em;text-transform:uppercase;font-size:.82rem;
+  color:var(--muted);cursor:pointer;padding:.6rem 0}
+.b-back:hover{color:var(--red)}
+.b-note{font-size:.85rem;color:var(--muted);text-align:center;margin-top:1.2rem}
+.b-alt{text-align:center;margin-top:2rem;font-size:.92rem;color:var(--muted)}
+.b-alt a{color:var(--red);font-weight:600}
+.status-pill{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--cond);letter-spacing:.16em;text-transform:uppercase;
+  font-size:.85rem;font-weight:600;padding:.55rem 1.2rem;border-radius:999px;border:1px solid;margin:1rem 0}
+.status-pill .dot{width:9px;height:9px;border-radius:50%;background:currentColor;animation:pulse 1.6s infinite}
+.status-pill.pendiente{background:rgba(185,126,31,.1);color:var(--amber);border-color:rgba(185,126,31,.45)}
+.status-pill.confirmada{background:rgba(46,125,79,.1);color:var(--green);border-color:rgba(46,125,79,.45)}
+.status-pill.cancelada{background:rgba(178,58,46,.08);color:var(--red);border-color:rgba(178,58,46,.4)}
+.ref-code{font-family:var(--disp);font-size:1.6rem;letter-spacing:.1em}
+
+/* ---------- panel barberos ---------- */
+body.panel-mode header, body.panel-mode main, body.panel-mode footer, body.panel-mode .wa-float{display:none}
+#panelView{min-height:100svh;background:var(--paper2);padding:0 0 4rem}
+.panel-top{background:var(--ink);color:var(--paper);padding:1.1rem 0;position:sticky;top:0;z-index:50}
+.panel-top .container{display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.panel-top h2{font-family:var(--disp);letter-spacing:.05em;font-size:1.35rem;color:var(--paper)}
+.panel-top .sub{font-family:var(--cond);font-size:.75rem;letter-spacing:.24em;color:#cdbf9f;text-transform:uppercase}
+.panel-exit{color:#cdbf9f;text-decoration:none;font-size:.85rem;font-family:var(--cond);letter-spacing:.14em;text-transform:uppercase}
+.panel-exit:hover{color:#fff}
+.pin-gate{max-width:380px;margin:5rem auto;text-align:center;background:var(--card);border:2px solid var(--ink);border-radius:18px;padding:2.4rem 2rem;box-shadow:var(--shadow)}
+.pin-gate h3{font-family:var(--disp);font-size:1.5rem;margin-bottom:.5rem;text-transform:uppercase;letter-spacing:.04em}
+.pin-gate p{color:var(--muted);font-size:.92rem;margin-bottom:1.2rem}
+.pin-gate input{width:140px;text-align:center;font-size:1.6rem;letter-spacing:.5em;padding:.7rem;border:1.5px solid var(--line);border-radius:12px;margin-bottom:1rem;font-family:var(--sans)}
+.pin-gate .err{color:var(--red);font-size:.88rem;margin-top:.7rem}
+.tabs{display:flex;gap:.6rem;margin:1.6rem 0;flex-wrap:wrap}
+.tab{border:1.5px solid var(--line);background:var(--card);border-radius:999px;padding:.6rem 1.3rem;cursor:pointer;
+  font-family:var(--cond);letter-spacing:.14em;text-transform:uppercase;font-size:.82rem;color:var(--muted)}
+.tab.active{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.tab .cnt{background:var(--red);color:#fff;border-radius:999px;font-size:.72rem;padding:.1rem .5rem;margin-left:.4rem;font-family:var(--sans)}
+.p-card{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--dots);border-radius:14px;
+  padding:1.3rem 1.5rem;margin-bottom:1rem;box-shadow:var(--shadow)}
+.p-card.pendiente{border-left-color:var(--amber)}
+.p-card.confirmada{border-left-color:var(--green)}
+.p-card.cancelada{border-left-color:var(--red);opacity:.72}
+.p-card.fresh{animation:flash 1.6s ease}
+@keyframes flash{0%,60%{box-shadow:0 0 0 3px var(--amber)}100%{box-shadow:var(--shadow)}}
+.p-top{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-bottom:.5rem;flex-wrap:wrap}
+.p-top b{font-family:var(--serif);font-size:1.15rem}
+.pill{font-family:var(--cond);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;padding:.3rem .85rem;border-radius:999px;border:1px solid}
+.pill.pendiente{color:var(--amber);border-color:rgba(185,126,31,.5);background:rgba(185,126,31,.08)}
+.pill.confirmada{color:var(--green);border-color:rgba(46,125,79,.5);background:rgba(46,125,79,.08)}
+.pill.cancelada{color:var(--red);border-color:rgba(178,58,46,.5);background:rgba(178,58,46,.07)}
+.p-meta{font-size:.93rem;color:var(--muted);margin-bottom:.25rem}
+.p-meta strong{color:var(--ink)}
+.p-meta a{color:var(--red);font-weight:600}
+.p-actions{display:flex;gap:.6rem;margin-top:.9rem;flex-wrap:wrap}
+.p-btn{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:.5rem 1.15rem;cursor:pointer;
+  font-family:var(--sans);font-weight:600;font-size:.85rem;color:var(--ink);transition:all .2s}
+.p-btn:hover{border-color:var(--ink)}
+.p-btn.ok{background:var(--green);border-color:var(--green);color:#fff}
+.p-btn.ok:hover{background:#256a42}
+.p-btn.danger{color:var(--red);border-color:rgba(178,58,46,.4)}
+.p-btn.danger:hover{background:var(--red);color:#fff;border-color:var(--red)}
+.p-reprog{margin-top:1rem;border-top:1px dashed var(--line);padding-top:1rem;display:grid;grid-template-columns:1fr 1fr auto;gap:.7rem;align-items:end}
+.p-empty{text-align:center;color:var(--muted);padding:3rem 1rem;font-style:italic}
+
+/* ---------- contacto ---------- */
+#contacto{background:var(--paper2);border-top:1px solid var(--line)}
+.contact-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:2.2rem;align-items:stretch}
+.info-card{background:var(--card);border:2px solid var(--ink);border-radius:20px;padding:2rem 2.1rem;box-shadow:var(--shadow)}
+.info-row{display:flex;gap:1.05rem;padding:1rem 0;border-bottom:1px dashed var(--line);align-items:flex-start}
+.info-row:last-child{border-bottom:none}
+.info-row svg{width:22px;height:22px;stroke:var(--red);fill:none;stroke-width:1.8;flex:none;margin-top:2px}
+.info-row b{display:block;font-family:var(--cond);font-weight:600;font-size:.76rem;letter-spacing:.22em;text-transform:uppercase;color:var(--red);margin-bottom:.25rem}
+.info-row a{color:var(--ink);text-decoration:none;font-weight:500}
+.info-row a:hover{color:var(--red)}
+.hours{width:100%;border-collapse:collapse;font-size:.94rem}
+.hours td{padding:.45rem 0;border-bottom:1px dashed var(--line)}
+.hours tr:last-child td{border-bottom:none}
+.hours td:last-child{text-align:right;color:var(--muted)}
+.hours tr.today td{color:var(--red);font-weight:700}
+.map-wrap{border-radius:20px;overflow:hidden;border:2px solid var(--ink);min-height:440px;box-shadow:var(--shadow)}
+.map-wrap iframe{width:100%;height:100%;min-height:440px;border:0}
+
+/* ---------- footer ---------- */
+footer{background:#1d150e;color:#e9dfc9;padding:0 0 2.4rem}
+footer .inner{padding-top:2.8rem;text-align:center}
+footer .stamp-lg{width:110px;height:110px;margin:0 auto 1rem}
+footer strong{font-family:var(--disp);font-size:1.3rem;letter-spacing:.05em}
+footer .slogan-f{font-family:var(--serif);font-style:italic;color:#b7a88c;margin:.3rem 0 1rem}
+footer nav{display:flex;gap:1.5rem;justify-content:center;margin:1rem 0 1.4rem;flex-wrap:wrap}
+footer nav a{text-decoration:none;color:#b7a88c;font-size:.9rem}
+footer nav a:hover{color:#fff}
+.social{display:flex;gap:.8rem;justify-content:center;margin-bottom:1.4rem}
+.social a{width:44px;height:44px;border:1px solid #4a3d2b;border-radius:50%;display:grid;place-items:center;text-decoration:none;transition:border-color .2s,transform .2s}
+.social a svg{width:20px;height:20px;stroke:#e9dfc9;fill:none;stroke-width:1.8}
+.social a:hover{border-color:var(--red);transform:translateY(-2px)}
+.copy{font-size:.85rem;color:#8a7a5f}
+
+/* ---------- whatsapp flotante ---------- */
+.wa-float{position:fixed;bottom:22px;right:22px;width:58px;height:58px;border-radius:50%;background:#25d366;display:grid;place-items:center;
+  box-shadow:0 10px 26px rgba(37,211,102,.45);z-index:90;transition:transform .2s;text-decoration:none}
+.wa-float:hover{transform:scale(1.08)}
+.wa-float svg{width:30px;height:30px;fill:#fff}
+
+/* ---------- reveal ---------- */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:none}
+
+/* ---------- responsive ---------- */
+@media(max-width:960px){
+  .hero-grid,.about-grid,.contact-grid{grid-template-columns:1fr}
+  .hero{padding-top:130px}
+  .hero-photo{order:-1}
+  .arch{width:min(320px,86%)}
+  .spin-badge{left:-8px}
+  .hero-pole{display:none}
+  .menu{grid-template-columns:1fr;gap:2.6rem}
+  .gal-grid{grid-template-columns:1fr 1fr}
+  .f-row{grid-template-columns:1fr}
+  .p-reprog{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+  .gal-grid{grid-template-columns:1fr;max-width:380px;margin:0 auto}
+  .feats{grid-template-columns:1fr}
+  section{padding:66px 0}
+  .b-body{padding:1.4rem}
+  .b-steps li{padding:.9rem .7rem}
+}
+@media(max-width:860px){
+  .burger{display:block}
+  .nav-links{position:fixed;top:0;right:-100%;width:min(320px,80vw);height:100svh;background:var(--paper);flex-direction:column;align-items:flex-start;
+    padding:5.5rem 2rem 2rem;gap:1.4rem;transition:right .3s;box-shadow:-10px 0 40px rgba(60,42,20,.25);border-left:1px solid var(--line)}
+  .nav-links.open{right:0}
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="stamp" viewBox="0 0 120 120">
+  <circle cx="60" cy="60" r="57" fill="#221a12"/>
+  <circle cx="60" cy="60" r="49" fill="none" stroke="#faf5ea" stroke-width="2"/>
+  <path id="stc" d="M60,60 m-40,0 a40,40 0 1,1 80,0 a40,40 0 1,1 -80,0" fill="none"/>
+  <text font-family="Oswald, sans-serif" font-size="11" letter-spacing="2.5" fill="#faf5ea" font-weight="600"><textPath href="#stc">LOS SANTOS ★ BARBER STUDIO ★</textPath></text>
+  <g stroke="#faf5ea" stroke-width="2.5" fill="none" stroke-linecap="round">
+    <circle cx="60" cy="50" r="6"/><circle cx="60" cy="70" r="6"/>
+    <path d="M64 54 80 38M64 66 80 82"/>
+  </g>
+</symbol>
+</defs></svg>
+
+<header id="header">
+  <div class="container nav">
+    <a class="brand" href="#inicio" aria-label="Los Santos BarberStudio - inicio">
+      <svg class="stamp-sm" aria-hidden="true"><use href="#stamp"/></svg>
+      <span class="brand-name">LOS SANTOS<small>Barber Studio</small></span>
+    </a>
+    <nav>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#inicio" class="active">Inicio</a></li>
+        <li><a href="#servicios">Servicios</a></li>
+        <li><a href="#nosotros">Nosotros</a></li>
+        <li><a href="#galeria">Galería</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+        <li><a class="btn btn-red btn-sm" href="#reserva">Reservar cita</a></li>
+      </ul>
+    </nav>
+    <button class="burger" id="burger" aria-label="Abrir menú"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<main>
+<!-- ============ HERO ============ -->
+<section class="hero" id="inicio">
+  <div class="container hero-grid">
+    <div>
+      <p class="eyebrow">Barbería · Sant Andreu, Barcelona</p>
+      <h1 class="hero-title">Tu corte,<br>tu <em>actitud.</em></h1>
+      <p class="slogan">«La excelencia es nuestra tradición» — Los Santos BarberStudio</p>
+      <div class="rating"><span class="stars">★★★★★</span><span><strong>5,0</strong> · 247 reseñas en Booksy</span></div>
+      <div><span class="open-badge" id="openBadge"><span class="dot"></span><span id="openText">Comprobando horario…</span></span></div>
+      <div class="hero-cta">
+        <a class="btn btn-red" href="#reserva">Reservar cita</a>
+        <a class="btn btn-outline" href="#servicios">Ver servicios</a>
+      </div>
+      <div class="hero-meta">
+        <div><b>5,0 ★</b><span>Valoración</span></div>
+        <div><b>247</b><span>Reseñas</span></div>
+        <div><b>3</b><span>Barberos</span></div>
+      </div>
+    </div>
+    <div class="hero-photo">
+      <div class="arch">
+        <img src="https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmnJDbz1VXYsiziUpS5uvHJ5zRqxDZ86_3TgHnz-691hYB7bgZDhCtPFUXRJp1qOtSD3hl4n1CUxplFIuxK-PmeQnhKko8_yqKkayyYQBtDAbBX69_XZsJKdk0_C2dC5Mjg7-zJ" alt="Interior de Los Santos BarberStudio">
+      </div>
+      <svg class="spin-badge" viewBox="0 0 128 128" aria-hidden="true">
+        <circle class="disc" cx="64" cy="64" r="62"/>
+        <g class="ring">
+          <defs><path id="circ" d="M64,64 m-46,0 a46,46 0 1,1 92,0 a46,46 0 1,1 -92,0"/></defs>
+          <text><textPath href="#circ">RESERVA TU CITA · LOS SANTOS ·</textPath></text>
+        </g>
+        <g class="sc" stroke-linecap="round"><circle cx="64" cy="58" r="5"/><circle cx="64" cy="74" r="5"/><path d="M67 62 78 50M67 70 78 82"/></g>
+      </svg>
+      <div class="pole-v hero-pole" aria-hidden="true"></div>
+    </div>
+  </div>
+</section>
+
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track" id="marqueeTrack">
+    <span>CORTE FADE</span><span class="r">✦</span><span>ARREGLO DE BARBA</span><span class="r">✦</span><span>RITUAL DE LA BARBA</span><span class="r">✦</span><span>MECHAS</span><span class="r">✦</span><span>GLOBAL COLOR</span><span class="r">✦</span><span>CORTE + BARBA</span><span class="r">✦</span>
+  </div>
+</div>
+
+<!-- ============ SERVICIOS ============ -->
+<section id="servicios">
+  <div class="container">
+    <div class="sec-head reveal">
+      <p class="sec-no">01</p>
+      <h2 class="sec-title">La <em>carta</em></h2>
+      <p class="sec-sub">Sin letra pequeña. Elige lo que necesites y reserva tu hueco en menos de un minuto.</p>
+    </div>
+    <div class="menu">
+      <div class="menu-cat reveal">
+        <h3><span class="n">A.</span> Cortes</h3>
+        <div class="menu-item">
+          <div class="info"><h4>Corte Fade <span class="dur">· 40 min</span></h4><p>Degradado preciso y acabado limpio, a tu estilo.</p></div>
+          <span class="dots"></span><span class="price">18&nbsp;€</span>
+        </div>
+        <div class="menu-item">
+          <div class="info"><h4>Corte + Barba <span class="dur">· 50 min</span></h4><p>El pack completo: corte a medida y barba perfilada.</p></div>
+          <span class="dots"></span><span class="price">24&nbsp;€</span>
+        </div>
+      </div>
+      <div class="menu-cat reveal">
+        <h3><span class="n">B.</span> Barba</h3>
+        <div class="menu-item">
+          <div class="info"><h4>Arreglo de barba <span class="dur">· 15 min</span></h4><p>Perfilado y definición para una barba impecable.</p></div>
+          <span class="dots"></span><span class="price">15&nbsp;€</span>
+        </div>
+        <div class="menu-item">
+          <div class="info"><h4>Ritual de la barba <span class="dur">· 1 h</span></h4><p>Toalla caliente, navaja y cuidado total. La experiencia premium.</p></div>
+          <span class="dots"></span><span class="price">30&nbsp;€</span>
+        </div>
+      </div>
+      <div class="menu-cat reveal">
+        <h3><span class="n">C.</span> Color premium</h3>
+        <div class="menu-item">
+          <div class="info"><h4>Mechas <span class="dur">· 2 h 30 min</span></h4><p>Luz y contraste con un acabado natural y moderno.</p></div>
+          <span class="dots"></span><span class="price">60&nbsp;€</span>
+        </div>
+        <div class="menu-item">
+          <div class="info"><h4>Global color <span class="dur">· 2 h 30 min</span></h4><p>Cambio de color completo con diagnóstico personalizado.</p></div>
+          <span class="dots"></span><span class="price">100&nbsp;€</span>
+        </div>
+      </div>
+      <div class="menu-cat reveal">
+        <h3><span class="n">D.</span> El detalle</h3>
+        <div class="menu-item">
+          <div class="info"><h4>Asesoramiento</h4><p>¿No sabes qué te favorece? Te aconsejamos sin compromiso.</p></div>
+          <span class="dots"></span><span class="price" style="font-size:1rem">Gratis</span>
+        </div>
+        <div class="menu-item">
+          <div class="info"><h4>Servicio a domicilio</h4><p>Llevamos la barbería a tu casa. Consulta disponibilidad.</p></div>
+          <span class="dots"></span><span class="price" style="font-size:1rem">A consultar</span>
+        </div>
+      </div>
+    </div>
+    <p class="svc-note reveal">Precios con IVA incluido. ¿Dudas con algún servicio? Escríbenos por WhatsApp y te asesoramos.</p>
+  </div>
+</section>
+<div class="pole"></div>
+
+<!-- ============ NOSOTROS ============ -->
+<section id="nosotros">
+  <div class="container about-grid">
+    <div class="about-photo reveal">
+      <div class="arch">
+        <img src="https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlKf9RFBtgzRiZvXMqq6aZOZikS1LksaM6VPJ3FQdXmaBzdhWGUNq0-UcPsnbxfgzTl8LYljr5z4rE5TxeXFlz5vuFjidukzIVDy_ZWlBXrejrrNbKOwxFWT9gYruQtmZeEimwA" alt="Fachada de Los Santos BarberStudio, Carrer de la Tramuntana 48" loading="lazy">
+      </div>
+      <div class="pole-v" aria-hidden="true"></div>
+    </div>
+    <div class="about-txt reveal">
+      <div class="sec-head" style="margin-bottom:1.4rem">
+        <p class="sec-no">02</p>
+        <h2 class="sec-title">La <em>casa</em></h2>
+      </div>
+      <p><strong>Tradición, navaja y trato de barrio.</strong> En Los Santos BarberStudio creemos que un buen corte no es un lujo: es una tradición. Cada servicio se hace sin prisas, con tijera, máquina y navaja en manos expertas.</p>
+      <p>Te recibimos en un local pensado para desconectar en pleno <strong>Sant Andreu</strong>: buena música, buen ambiente y un resultado que se nota al salir por la puerta.</p>
+      <div class="feats">
+        <div class="feat"><svg viewBox="0 0 24 24"><path d="M5 12.5a10 10 0 0 1 14 0M8 15.5a6 6 0 0 1 8 0M11 18.5a2 2 0 0 1 2 0"/><circle cx="12" cy="19.5" r="1" fill="currentColor"/></svg><span>Wi-Fi gratis</span></div>
+        <div class="feat"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.2"/><path d="M5 20c1.2-3.4 3.8-5 7-5s5.8 1.6 7 5"/></svg><span>Adaptado para niños</span></div>
+        <div class="feat"><svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="5"/><path d="M8.5 13.5 7 21l5-2.5L17 21l-1.5-7.5"/></svg><span>Programa de fidelidad</span></div>
+        <div class="feat"><svg viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5M6 10.5V20h12v-9.5"/></svg><span>Servicio a domicilio</span></div>
+      </div>
+      <div class="ticket">
+        <svg viewBox="0 0 24 24"><path d="M3 9V7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2a2.5 2.5 0 0 0 0 5v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a2.5 2.5 0 0 0 0-5z"/><path d="M14 7v10" stroke-dasharray="2.5 2.5"/></svg>
+        <div><b>Club Los Santos</b><p>Nuestro programa de fidelidad premia a los que repiten. Pregunta en tu próxima visita.</p></div>
+      </div>
+      <div class="team"><span class="lbl">El equipo</span><span class="chip">Maikell</span><span class="chip">Luis</span><span class="chip">Adriano</span></div>
+    </div>
+  </div>
+</section>
+<div class="pole"></div>
+
+<!-- ============ GALERÍA ============ -->
+<section id="galeria">
+  <div class="container">
+    <div class="sec-head reveal" style="text-align:center">
+      <p class="sec-no" style="justify-content:center;display:flex">03</p>
+      <h2 class="sec-title" style="text-align:center">El <em>oficio</em></h2>
+      <p class="sec-sub" style="margin-left:auto;margin-right:auto;text-align:center">Una muestra de lo que hacemos cada día. En Instagram hay mucho más.</p>
+    </div>
+    <div class="gal-grid">
+      <div class="gal-item reveal">
+        <div class="ph"><img src="https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkwXwzKffagbzBHmfh0ENoRNpANwbf4ZDuPxMNkh0DA8EZd45njFWpEhhOH6w_WI7u7sUMt5Ro3GF0qLU97b8bqwmI3XDt3MLb2lNRF0fHh59qDbqkwASOH4n2wp4nYH41MaO-Z" alt="Degradado en la nuca, trabajo de Los Santos BarberStudio" loading="lazy"></div>
+        <div class="gal-cap">Degradado al detalle</div>
+      </div>
+      <div class="gal-item reveal">
+        <div class="ph"><img src="https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnYiqVCNnVhGZAeMVvREn3M-PoiU_tRnt2mmgaB1wP1C2rvo0aArX34NfOAelmDteYgRr-c7z0TdIecofkgIlZhGLcTjiOVyJseP32ZoB5P_5ylQ2opZfOMkOLi2CseGcfR22m0kl8LBM0n" alt="Cliente con su corte recién hecho en Los Santos BarberStudio" loading="lazy"></div>
+        <div class="gal-cap">Recién cortado</div>
+      </div>
+      <div class="gal-item reveal">
+        <div class="ph"><img src="https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkS-fGyQes5K5brDc0U_3zDAfLDAmx7oa9GGFCZSwaGaB6rqM5BfdrvoJ3W4M87bRM2CEbzYol5miWegLUmrG08fvKhm5id2LklRqbeCRaSd9NQGtXu6fzCjDhRCl-fWFmmIZKRjQ" alt="Corte infantil de perfil, trabajo de Los Santos BarberStudio" loading="lazy"></div>
+        <div class="gal-cap">Corte a medida</div>
+      </div>
+    </div>
+    <div class="gal-cta reveal">
+      <a class="btn btn-ink" href="https://www.instagram.com/lossantos_barberstudio/" target="_blank" rel="noopener">Ver más en Instagram</a>
+    </div>
+  </div>
+</section>
+<div class="pole"></div>
+
+<!-- ============ RESERVA ============ -->
+<section id="reserva">
+  <div class="container">
+    <div class="sec-head reveal" style="text-align:center">
+      <p class="sec-no" style="justify-content:center;display:flex">04</p>
+      <h2 class="sec-title" style="text-align:center">Pide tu <em>cita</em></h2>
+      <p class="sec-sub" style="margin-left:auto;margin-right:auto;text-align:center">Elige barbero, día y hora. Tu petición llega al instante al panel de la barbería.</p>
+    </div>
+
+    <div class="booking reveal" id="bookingApp">
+      <div class="booking-head">
+        <h3>Reserva tu cita <span class="demo-flag" id="demoFlag" hidden>Modo demo</span></h3>
+        <span class="no">Los Santos · Sant Andreu</span>
+      </div>
+      <ol class="b-steps" id="bSteps">
+        <li data-s="1" class="active"><span class="bn">1</span><span class="lbl">Servicio</span></li>
+        <li data-s="2"><span class="bn">2</span><span class="lbl">Barbero</span></li>
+        <li data-s="3"><span class="bn">3</span><span class="lbl">Fecha</span></li>
+        <li data-s="4"><span class="bn">4</span><span class="lbl">Hora</span></li>
+        <li data-s="5"><span class="bn">5</span><span class="lbl">Tus datos</span></li>
+      </ol>
+      <div class="b-body">
+        <div class="b-panel show" data-panel="1" id="pServicios"></div>
+        <div class="b-panel" data-panel="2" id="pBarberos"></div>
+        <div class="b-panel" data-panel="3"><div class="days" id="pDias"></div></div>
+        <div class="b-panel" data-panel="4"><div class="hours-grid" id="pHoras"></div></div>
+        <div class="b-panel" data-panel="5">
+          <div class="summary" id="pResumen"></div>
+          <div class="f-row">
+            <div class="f-field" id="fNombre">
+              <label for="inNombre">Tu nombre</label>
+              <input id="inNombre" type="text" placeholder="¿Cómo te llamas?" autocomplete="name">
+              <span class="err">Dinos tu nombre para la reserva.</span>
+            </div>
+            <div class="f-field" id="fTelefono">
+              <label for="inTelefono">Tu teléfono</label>
+              <input id="inTelefono" type="tel" placeholder="600 123 123" autocomplete="tel">
+              <span class="err">Necesitamos un teléfono válido para confirmarte.</span>
+            </div>
+          </div>
+          <div class="f-field" style="margin-bottom:0">
+            <label for="inNotas">Notas <span style="text-transform:none;letter-spacing:0">(opcional)</span></label>
+            <textarea id="inNotas" placeholder="¿Algo que debamos saber?"></textarea>
+          </div>
+        </div>
+        <div class="b-panel" data-panel="6" id="pEstado">
+          <div style="text-align:center;padding:1rem 0">
+            <p class="eyebrow" style="justify-content:center">Petición enviada</p>
+            <p style="font-size:1.05rem;margin-bottom:.4rem">Tu código de reserva</p>
+            <p class="ref-code" id="refCode">—</p>
+            <div><span class="status-pill pendiente" id="statusPill"><span class="dot"></span><span id="statusTxt">Pendiente de confirmación</span></span></div>
+            <p style="color:var(--muted);font-size:.92rem;max-width:460px;margin:0 auto" id="statusMsg">La barbería la está revisando. No cierres esta página: verás aquí mismo cuando la confirmen.</p>
+          </div>
+        </div>
+        <div class="b-nav" id="bNav">
+          <button class="b-back" id="bBack" style="visibility:hidden">← Atrás</button>
+          <button class="btn btn-red" id="bNext">Continuar →</button>
+        </div>
+        <p class="b-note" id="bNote">Sin compromiso: la barbería confirma cada petición antes de que quede cerrada.</p>
+      </div>
+    </div>
+    <p class="b-alt reveal">¿Prefieres el sistema de siempre? También puedes reservar en <a href="https://booksy.com/es-es/135004_los-santos-barberstudio_barberia_48863_barcelona" target="_blank" rel="noopener">Booksy</a> o escribirnos por <a href="https://wa.me/34671262745" target="_blank" rel="noopener">WhatsApp</a>.</p>
+  </div>
+</section>
+
+<!-- ============ CONTACTO ============ -->
+<section id="contacto">
+  <div class="container">
+    <div class="sec-head reveal">
+      <p class="sec-no">05</p>
+      <h2 class="sec-title">Visi<em>tanos</em></h2>
+      <p class="sec-sub">En Sant Andreu, muy bien comunicados.</p>
+    </div>
+    <div class="contact-grid">
+      <div class="info-card reveal">
+        <div class="info-row">
+          <svg viewBox="0 0 24 24"><path d="M12 21s-7-5.5-7-11a7 7 0 0 1 14 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>
+          <div><b>Dirección</b><a href="https://www.google.com/maps/place/Los+Santos+BarberStudio/@41.4381166,2.1882219,17z" target="_blank" rel="noopener">Carrer de la Tramuntana, 48<br>08030 Barcelona (Sant Andreu)</a></div>
+        </div>
+        <div class="info-row">
+          <svg viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a12 12 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg>
+          <div><b>Teléfono / WhatsApp</b><a href="tel:+34671262745">671 26 27 45</a></div>
+        </div>
+        <div class="info-row">
+          <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4.5"/><circle cx="12" cy="12" r="3.6"/><circle cx="17" cy="7.2" r="1.1" fill="currentColor" stroke="none"/></svg>
+          <div><b>Instagram</b><a href="https://www.instagram.com/lossantos_barberstudio/" target="_blank" rel="noopener">@lossantos_barberstudio</a></div>
+        </div>
+        <div class="info-row">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>
+          <div style="flex:1"><b>Horario</b>
+            <table class="hours" id="hoursTable">
+              <tr data-day="1,2,3,4,5"><td>Lunes – Viernes</td><td>10:00–14:00 · 15:00–20:00</td></tr>
+              <tr data-day="6"><td>Sábado</td><td>10:00–14:00 · 15:00–18:00</td></tr>
+              <tr data-day="0"><td>Domingo</td><td>Cerrado</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="map-wrap reveal">
+        <iframe title="Mapa: Los Santos BarberStudio" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+          src="https://www.google.com/maps?q=Los%20Santos%20BarberStudio%2C%20Carrer%20de%20la%20Tramuntana%2048%2C%2008030%20Barcelona&output=embed"></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="pole"></div>
+  <div class="container inner">
+    <svg class="stamp-lg" aria-hidden="true"><use href="#stamp"/></svg>
+    <strong>LOS SANTOS BARBER STUDIO</strong>
+    <p class="slogan-f">«La excelencia es nuestra tradición»</p>
+    <div class="social">
+      <a href="https://www.instagram.com/lossantos_barberstudio/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4.5"/><circle cx="12" cy="12" r="3.6"/><circle cx="17" cy="7.2" r="1.1" fill="currentColor" stroke="none"/></svg></a>
+      <a href="https://wa.me/34671262745" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.7-1.2A9 9 0 1 0 12 3z"/><path d="M9 9.5c.5 2.5 3 5 5.5 5.5l1-1.5 2 1c-.5 1.5-1.5 2-3 1.5-3-1-6-4-7-7-.5-1.5 0-2.5 1.5-3l1 2z"/></svg></a>
+      <a href="tel:+34671262745" aria-label="Llamar"><svg viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a12 12 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg></a>
+    </div>
+    <nav>
+      <a href="#servicios">Servicios</a><a href="#reserva">Reservar</a><a href="#contacto">Contacto</a>
+    </nav>
+    <p class="copy">© <span id="year">2026</span> Los Santos BarberStudio · Carrer de la Tramuntana 48, Barcelona</p>
+  </div>
+</footer>
+
+<!-- ============ PANEL DE BARBEROS ============ -->
+<div id="panelView" hidden>
+  <div class="panel-top">
+    <div class="container">
+      <div><h2>Panel de barberos <span class="demo-flag" id="demoFlagP" hidden>Modo demo</span></h2><span class="sub">Los Santos BarberStudio</span></div>
+      <a class="panel-exit" href="#">← Volver a la web</a>
+    </div>
+  </div>
+  <div class="container">
+    <div class="pin-gate" id="pinGate">
+      <h3>Zona privada</h3>
+      <p>Solo para el equipo. Introduce el PIN de la barbería.</p>
+      <input id="pinInput" type="password" inputmode="numeric" maxlength="4" placeholder="••••" autocomplete="off">
+      <br><button class="btn btn-ink btn-sm" id="pinBtn">Entrar</button>
+      <p class="err" id="pinErr" hidden>PIN incorrecto, prueba de nuevo.</p>
+    </div>
+    <div id="panelMain" hidden>
+      <div class="tabs" id="panelTabs">
+        <button class="tab active" data-tab="pendientes">Pendientes<span class="cnt" id="cntPend" hidden>0</span></button>
+        <button class="tab" data-tab="hoy">Hoy</button>
+        <button class="tab" data-tab="agenda">Agenda</button>
+      </div>
+      <div id="panelList"></div>
+    </div>
+  </div>
+</div>
+
+<a class="wa-float" href="https://wa.me/34671262745?text=Hola%20Los%20Santos%20BarberStudio%2C%20quiero%20pedir%20cita" target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp">
+  <svg viewBox="0 0 32 32"><path d="M16 3C9.4 3 4 8.4 4 15c0 2.4.7 4.7 2 6.7L4 29l7.5-2c2 .6 4 1 4.5 1 6.6 0 12-5.4 12-12S22.6 3 16 3zm0 21.8c-1.4 0-2.8-.4-4-1.1l-.3-.2-4.4 1.2 1.2-4.3-.2-.3c-.8-1.3-1.2-2.7-1.2-4.2 0-4.5 3.7-8.2 8.2-8.2s8.2 3.7 8.2 8.2-3.7 8.2-8.2 8.2zm4.6-6.1c-.3-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1-.2.3-.6.8-.8 1-.1.2-.3.2-.5.1-.3-.1-1.1-.4-2-1.3-.7-.7-1.2-1.5-1.4-1.7-.1-.3 0-.4.1-.5l.4-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5-.1-.1-.6-1.4-.8-1.9-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.2-.7.3-.9.9-1.1 2.2-.2 3.9.9 1.9 2.8 3.9 5.1 5.1 1.9 1 2.7 1.1 3.6.9.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.1-1.2 0-.1-.2-.2-.4-.2z"/></svg>
+</a>
+
+<script>
+/* ================================================================
+   CONFIGURACIÓN — LÉEME
+   1) Crea un proyecto gratis en https://console.firebase.google.com
+   2) Activa "Realtime Database" (modo bloqueado) y pega estas reglas:
+      { "rules": { "barberia": { "bookings": {
+          ".read": true, ".write": true, ".indexOn": ["fecha","estado"] } } } }
+   3) En "Configuración del proyecto" → "Tus apps" → web, copia el
+      objeto firebaseConfig y pégalo aquí debajo (sustituye los valores).
+   Sin esto, la web funciona en MODO DEMO: las reservas solo viven en
+   este navegador (vale para probar, no para trabajar de verdad).
+   ================================================================ */
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyA_xAM6iEQmbgGt6pzwz7S9dcrrw32TQdE",
+  authDomain: "los-santos-barberstudio.firebaseapp.com",
+  databaseURL: "https://los-santos-barberstudio-default-rtdb.firebaseio.com",
+  projectId: "los-santos-barberstudio"
+};
+const PANEL_PIN = "1234"; // <-- CAMBIA ESTE PIN por el que quieras
+
+/* ================= DATOS ================= */
+const SERVICIOS = [
+  {id:'fade',        nombre:'Corte Fade',        precio:18,  dur:40},
+  {id:'corte-barba', nombre:'Corte + Barba',     precio:24,  dur:50},
+  {id:'barba',       nombre:'Arreglo de barba',  precio:15,  dur:15},
+  {id:'ritual',      nombre:'Ritual de la barba',precio:30,  dur:60},
+  {id:'mechas',      nombre:'Mechas',            precio:60,  dur:150},
+  {id:'color',       nombre:'Global color',      precio:100, dur:150}
+];
+const BARBEROS = [
+  {id:'maikell', nombre:'Maikell', ini:'M'},
+  {id:'luis',    nombre:'Luis',    ini:'L'},
+  {id:'adriano', nombre:'Adriano', ini:'A'}
+];
+// horario de la tienda: [día]: [[apertura, cierre] en minutos] · 0=domingo
+const HORARIO = {0:null,1:[[600,840],[900,1200]],2:[[600,840],[900,1200]],3:[[600,840],[900,1200]],4:[[600,840],[900,1200]],5:[[600,840],[900,1200]],6:[[600,840],[900,1080]]};
+
+/* ================= CAPA DE DATOS (Firebase o demo local) ================= */
+const DB = {
+  mode:'demo', bookings:{}, _subs:[], _fbRef:null,
+  init(){
+    if (FIREBASE_CONFIG.apiKey.indexOf('PEGA_AQUI') !== 0 && window.firebase){
+      try{
+        firebase.initializeApp(FIREBASE_CONFIG);
+        this._fbRef = firebase.database().ref('barberia/bookings');
+        this.mode = 'firebase';
+        this._fbRef.on('value', snap => { this.bookings = snap.val() || {}; this._emit(); });
+      }catch(e){ this._initDemo(); }
+    } else this._initDemo();
+    const demo = this.mode === 'demo';
+    const f1 = document.getElementById('demoFlag'), f2 = document.getElementById('demoFlagP');
+    if(f1) f1.hidden = !demo;
+    if(f2) f2.hidden = !demo;
+  },
+  _initDemo(){
+    try{ this.bookings = JSON.parse(localStorage.getItem('lsb_demo_bookings') || '{}'); }catch(e){ this.bookings = {}; }
+    addEventListener('storage', e => {
+      if(e.key === 'lsb_demo_bookings'){
+        try{ this.bookings = JSON.parse(e.newValue || '{}'); }catch(_){ this.bookings = {}; }
+        this._emit();
+      }
+    });
+  },
+  _saveDemo(){ try{ localStorage.setItem('lsb_demo_bookings', JSON.stringify(this.bookings)); }catch(e){} },
+  _emit(){ this._subs.forEach(cb => { try{cb(this.bookings);}catch(e){} }); },
+  onBookings(cb){ this._subs.push(cb); cb(this.bookings); },
+  pushBooking(b){
+    const id = 'b' + Date.now().toString(36) + Math.random().toString(36).slice(2,7);
+    b.id = id; b.creada = Date.now();
+    b.codigo = 'LS-' + Math.random().toString(36).slice(2,6).toUpperCase();
+    if(this.mode === 'firebase') return this._fbRef.child(id).set(b).then(() => id);
+    this.bookings[id] = b; this._saveDemo(); this._emit();
+    return Promise.resolve(id);
+  },
+  updateBooking(id, patch){
+    if(this.mode === 'firebase') return this._fbRef.child(id).update(patch);
+    if(this.bookings[id]) Object.assign(this.bookings[id], patch);
+    this._saveDemo(); this._emit();
+    return Promise.resolve();
+  }
+};
+
+/* ================= UTILIDADES ================= */
+const $ = s => document.querySelector(s);
+const DIA_S = ['DOM','LUN','MAR','MIÉ','JUE','VIE','SÁB'];
+const MES_S = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+const pad2 = n => String(n).padStart(2,'0');
+const fmtMin = m => pad2(Math.floor(m/60)) + ':' + pad2(m%60);
+const fmtDur = d => d >= 60 ? (d%60 ? Math.floor(d/60)+' h '+d%60+' min' : Math.floor(d/60)+' h') : d+' min';
+const fechaStr = d => d.getFullYear() + '-' + pad2(d.getMonth()+1) + '-' + pad2(d.getDate());
+const mismoDia = (a,b) => a.getFullYear()===b.getFullYear() && a.getMonth()===b.getMonth() && a.getDate()===b.getDate();
+const fmtFecha = d => d.toLocaleDateString('es-ES',{weekday:'long', day:'numeric', month:'long', year:'numeric'});
+const nombreBarbero = id => (BARBEROS.find(b => b.id === id) || {}).nombre || '—';
+
+function reservasBarbero(bid, fstr){
+  return Object.values(DB.bookings)
+    .filter(b => b.barberoId === bid && b.fecha === fstr && b.estado !== 'cancelada')
+    .map(b => { const p = b.hora.split(':'); const i = (+p[0])*60 + (+p[1]); return [i, i + (+b.dur || 30)]; });
+}
+function huecosBarbero(bid, fecha, dur){
+  const bloques = HORARIO[fecha.getDay()] || [];
+  const ocup = reservasBarbero(bid, fechaStr(fecha));
+  const out = [];
+  const hoy = new Date(), esHoy = mismoDia(fecha, hoy);
+  const limite = hoy.getHours()*60 + hoy.getMinutes() + 30;
+  for(const [a,c] of bloques){
+    for(let t = a; t + dur <= c; t += 30){
+      if(esHoy && t < limite) continue;
+      if(ocup.some(([o1,o2]) => t < o2 && t + dur > o1)) continue;
+      out.push(t);
+    }
+  }
+  return out;
+}
+function huecosAlgunBarbero(fecha, dur){
+  const set = new Set();
+  BARBEROS.forEach(b => huecosBarbero(b.id, fecha, dur).forEach(t => set.add(t)));
+  return [...set].sort((a,b) => a-b);
+}
+function barberosLibresEn(fecha, horaMin, dur){
+  return BARBEROS.filter(b => huecosBarbero(b.id, fecha, dur).includes(horaMin));
+}
+function proximoHueco(bid, dur){
+  const hoy = new Date();
+  for(let i=0; i<14; i++){
+    const d = new Date(hoy); d.setDate(hoy.getDate()+i);
+    if(d.getDay() === 0) continue;
+    const h = huecosBarbero(bid, d, dur);
+    if(h.length) return {fecha:d, hora:h[0]};
+  }
+  return null;
+}
+
+/* ================= RESERVA (cliente) ================= */
+const BK = { paso:1, servicio:null, barbero:null, fecha:null, hora:null, bookingId:null };
+
+function irAPaso(n){
+  BK.paso = n;
+  document.querySelectorAll('.b-panel').forEach(p => p.classList.toggle('show', +p.dataset.panel === n));
+  document.querySelectorAll('#bSteps li').forEach(li => {
+    const s = +li.dataset.s;
+    li.classList.toggle('active', s === n);
+    li.classList.toggle('done', s < n || n === 6);
+  });
+  $('#bBack').style.visibility = (n === 1 || n === 6) ? 'hidden' : 'visible';
+  $('#bNav').style.display = n === 6 ? 'none' : 'flex';
+  const next = $('#bNext');
+  next.textContent = n === 5 ? 'Enviar petición →' : 'Continuar →';
+  const notes = {
+    1:'Elige el servicio que necesitas.',
+    2:'Elige quién te atiende. Ves sus huecos libres en tiempo real.',
+    3:'Días con hueco disponible para tu elección.',
+    4:'Horas libres. Se calculan según el horario y las citas ya cogidas.',
+    5:'Sin compromiso: la barbería confirma cada petición antes de que quede cerrada.',
+    6:''
+  };
+  $('#bNote').textContent = notes[n] || '';
+  const app = $('#bookingApp');
+  if(app) app.scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+
+function renderServicios(){
+  $('#pServicios').innerHTML = SERVICIOS.map(s => `
+    <button class="opt" data-id="${s.id}">
+      <span class="oi"><b>${s.nombre}</b><span>${fmtDur(s.dur)}</span></span>
+      <span class="op">${s.precio}&nbsp;€</span><span class="go">→</span>
+    </button>`).join('');
+}
+function renderBarberos(){
+  const dur = BK.servicio.dur;
+  const hoy = new Date();
+  let html = BARBEROS.map(b => {
+    const h = huecosBarbero(b.id, hoy, dur);
+    const px = proximoHueco(b.id, dur);
+    const cls = h.length >= 4 ? 'ok' : (h.length > 0 ? 'mid' : 'ko');
+    const txt = h.length
+      ? `${h.length} hueco${h.length>1?'s':''} hoy`
+      : (px ? `Próximo: ${px.fecha.getDate()} ${MES_S[px.fecha.getMonth()]} · ${fmtMin(px.hora)}` : 'Sin huecos próximos');
+    return `<button class="opt" data-id="${b.id}">
+      <span class="avatar">${b.ini}</span>
+      <span class="oi"><b>${b.nombre}</b><span class="avail"><i class="dot ${cls}"></i>${txt}</span></span>
+      <span class="go">→</span></button>`;
+  }).join('');
+  html += `<button class="opt" data-id="any">
+      <span class="avatar" style="background:var(--red)">?</span>
+      <span class="oi"><b>Quien esté libre</b><span>Te asignamos el primer barbero disponible</span></span>
+      <span class="go">→</span></button>`;
+  $('#pBarberos').innerHTML = html;
+}
+function listaDias(){
+  const dias = [], hoy = new Date();
+  for(let i=0; i<14 && dias.length<12; i++){
+    const d = new Date(hoy); d.setDate(hoy.getDate()+i);
+    if(d.getDay() !== 0) dias.push(d);
+  }
+  return dias;
+}
+function renderDias(){
+  const dur = BK.servicio.dur, dias = listaDias();
+  $('#pDias').innerHTML = dias.map((d,i) => {
+    const n = BK.barbero === 'any' ? huecosAlgunBarbero(d, dur).length : huecosBarbero(BK.barbero, d, dur).length;
+    return `<button class="day" data-i="${i}" ${n===0?'disabled':''}>
+      <span class="dw">${i===0?'HOY':DIA_S[d.getDay()]}</span>
+      <span class="dn">${d.getDate()}</span>
+      <span class="dm">${MES_S[d.getMonth()]} · ${n} hueco${n===1?'':'s'}</span>
+    </button>`;
+  }).join('');
+  $('#pDias')._dias = dias;
+}
+function renderHoras(){
+  const box = $('#pHoras');
+  const dur = BK.servicio.dur;
+  const slots = BK.barbero === 'any' ? huecosAlgunBarbero(BK.fecha, dur) : huecosBarbero(BK.barbero, BK.fecha, dur);
+  if(!slots.length){ box.innerHTML = '<p class="empty">Ese día ya no quedan huecos. Prueba con otro día.</p>'; return; }
+  box.innerHTML = slots.map(m => `<button class="hour" data-m="${m}">${fmtMin(m)}</button>`).join('');
+}
+function renderResumen(){
+  const s = BK.servicio;
+  const bNom = BK.barbero === 'any' ? 'Quien esté libre' : nombreBarbero(BK.barbero);
+  $('#pResumen').innerHTML = `
+    <h4>Tu cita</h4>
+    <dl>
+      <dt>Servicio</dt><dd>${s.nombre} — ${s.precio} € (${fmtDur(s.dur)})</dd>
+      <dt>Barbero</dt><dd>${bNom}</dd>
+      <dt>Fecha</dt><dd style="text-transform:capitalize">${fmtFecha(BK.fecha)}</dd>
+      <dt>Hora</dt><dd>${fmtMin(BK.hora)}</dd>
+    </dl>`;
+}
+function validar(){
+  let ok = true;
+  const nom = $('#inNombre').value.trim();
+  const tel = $('#inTelefono').value.replace(/[\s.\-]/g,'');
+  $('#fNombre').classList.toggle('bad', nom.length < 2); if(nom.length < 2) ok = false;
+  const telOk = /^[+\d][\d]{8,14}$/.test(tel);
+  $('#fTelefono').classList.toggle('bad', !telOk); if(!telOk) ok = false;
+  return ok ? {nom, tel} : null;
+}
+
+function initBooking(){
+  renderServicios();
+  $('#pServicios').addEventListener('click', e => {
+    const b = e.target.closest('.opt'); if(!b) return;
+    document.querySelectorAll('#pServicios .opt').forEach(o => o.classList.remove('sel'));
+    b.classList.add('sel');
+    BK.servicio = SERVICIOS.find(s => s.id === b.dataset.id);
+    BK.barbero = BK.fecha = BK.hora = null;
+    setTimeout(() => { renderBarberos(); irAPaso(2); }, 220);
+  });
+  $('#pBarberos').addEventListener('click', e => {
+    const b = e.target.closest('.opt'); if(!b) return;
+    document.querySelectorAll('#pBarberos .opt').forEach(o => o.classList.remove('sel'));
+    b.classList.add('sel');
+    BK.barbero = b.dataset.id;
+    BK.fecha = BK.hora = null;
+    setTimeout(() => { renderDias(); irAPaso(3); }, 220);
+  });
+  $('#pDias').addEventListener('click', e => {
+    const b = e.target.closest('.day'); if(!b || b.disabled) return;
+    document.querySelectorAll('#pDias .day').forEach(x => x.classList.remove('sel'));
+    b.classList.add('sel');
+    BK.fecha = $('#pDias')._dias[+b.dataset.i];
+    BK.hora = null;
+    setTimeout(() => { renderHoras(); irAPaso(4); }, 220);
+  });
+  $('#pHoras').addEventListener('click', e => {
+    const b = e.target.closest('.hour'); if(!b) return;
+    document.querySelectorAll('#pHoras .hour').forEach(x => x.classList.remove('sel'));
+    b.classList.add('sel');
+    BK.hora = +b.dataset.m;
+    setTimeout(() => { renderResumen(); irAPaso(5); }, 220);
+  });
+  $('#bNext').addEventListener('click', () => {
+    if(BK.paso === 1 && BK.servicio){ renderBarberos(); irAPaso(2); }
+    else if(BK.paso === 2 && BK.barbero){ renderDias(); irAPaso(3); }
+    else if(BK.paso === 3 && BK.fecha){ renderHoras(); irAPaso(4); }
+    else if(BK.paso === 4 && BK.hora != null){ renderResumen(); irAPaso(5); }
+    else if(BK.paso === 5){ enviarReserva(); }
+  });
+  $('#bBack').addEventListener('click', () => { if(BK.paso > 1 && BK.paso < 6) irAPaso(BK.paso - 1); });
+  document.querySelectorAll('#bSteps li').forEach(li => li.addEventListener('click', () => {
+    const s = +li.dataset.s, ok =
+      (s===1) || (s===2 && BK.servicio) || (s===3 && BK.barbero) ||
+      (s===4 && BK.fecha) || (s===5 && BK.hora != null);
+    if(!ok || s >= BK.paso) return;
+    if(s===2) renderBarberos();
+    if(s===3) renderDias();
+    if(s===4) renderHoras();
+    if(s===5) renderResumen();
+    irAPaso(s);
+  }));
+  // si cambian las reservas mientras eliges, recalcula el paso visible
+  DB.onBookings(() => {
+    if(BK.paso === 2) renderBarberos();
+    if(BK.paso === 3) renderDias();
+    if(BK.paso === 4) renderHoras();
+  });
+}
+
+function enviarReserva(){
+  const v = validar(); if(!v) return;
+  const s = BK.servicio;
+  let barberoId = BK.barbero, barberoNombre;
+  if(barberoId === 'any'){
+    const libres = barberosLibresEn(BK.fecha, BK.hora, s.dur);
+    if(!libres.length){ alert('Vaya, ese hueco se acaba de ocupar. Elige otra hora.'); renderHoras(); irAPaso(4); return; }
+    const fstr = fechaStr(BK.fecha);
+    libres.sort((a,b) => reservasBarbero(a.id,fstr).length - reservasBarbero(b.id,fstr).length);
+    barberoId = libres[0].id;
+  }
+  barberoNombre = nombreBarbero(barberoId);
+  const btn = $('#bNext'); btn.disabled = true; btn.textContent = 'Enviando…';
+  DB.pushBooking({
+    servicioId:s.id, servicioNombre:s.nombre, precio:s.precio, dur:s.dur,
+    barberoId, barberoNombre,
+    fecha:fechaStr(BK.fecha), hora:fmtMin(BK.hora),
+    nombre:v.nom, telefono:v.tel, notas:$('#inNotas').value.trim(),
+    estado:'pendiente', origen:'web'
+  }).then(id => {
+    BK.bookingId = id;
+    btn.disabled = false;
+    const b = DB.bookings[id];
+    $('#refCode').textContent = b.codigo;
+    irAPaso(6);
+    vigilarEstado(id);
+  }).catch(() => {
+    btn.disabled = false; btn.textContent = 'Enviar petición →';
+    alert('No se pudo enviar. Revisa tu conexión e inténtalo de nuevo.');
+  });
+}
+function vigilarEstado(id){
+  const pintar = bookings => {
+    const b = bookings[id]; if(!b) return;
+    const pill = $('#statusPill'), txt = $('#statusTxt'), msg = $('#statusMsg');
+    pill.className = 'status-pill ' + b.estado;
+    if(b.estado === 'confirmada'){
+      txt.textContent = '¡Confirmada!';
+      msg.textContent = `Te esperamos el ${b.fecha.split('-').reverse().join('/')} a las ${b.hora} con ${b.barberoNombre}.`;
+    } else if(b.estado === 'cancelada'){
+      txt.textContent = 'Cancelada';
+      msg.textContent = 'Esta petición se ha cancelado. Llámanos al 671 26 27 45 si quieres otro hueco.';
+    } else {
+      txt.textContent = 'Pendiente de confirmación';
+      msg.textContent = 'La barbería la está revisando. No cierres esta página: verás aquí mismo cuando la confirmen.';
+    }
+  };
+  DB.onBookings(pintar);
+}
+
+/* ================= PANEL DE BARBEROS ================= */
+const Panel = {
+  tab:'pendientes', desde:0, vistos:new Set(), iniciado:false,
+  init(){
+    if(this.iniciado) return; this.iniciado = true;
+    this.desde = Date.now();
+    const gate = $('#pinGate'), main = $('#panelMain');
+    if(sessionStorage.getItem('lsb_panel') === '1'){ gate.hidden = true; main.hidden = false; this.arrancar(); }
+    const entrar = () => {
+      if($('#pinInput').value === PANEL_PIN){
+        sessionStorage.setItem('lsb_panel','1');
+        gate.hidden = true; main.hidden = false; this.arrancar();
+      } else $('#pinErr').hidden = false;
+    };
+    $('#pinBtn').addEventListener('click', entrar);
+    $('#pinInput').addEventListener('keydown', e => { if(e.key === 'Enter') entrar(); });
+    document.querySelectorAll('#panelTabs .tab').forEach(t => t.addEventListener('click', () => {
+      document.querySelectorAll('#panelTabs .tab').forEach(x => x.classList.remove('active'));
+      t.classList.add('active'); this.tab = t.dataset.tab; this.render();
+    }));
+  },
+  arrancar(){
+    DB.onBookings(bk => {
+      // aviso de reservas nuevas
+      Object.values(bk).forEach(b => {
+        if(b.estado === 'pendiente' && b.creada > this.desde && !this.vistos.has(b.id)){
+          this.vistos.add(b.id); this.beep();
+        }
+      });
+      this.render();
+    });
+  },
+  beep(){
+    try{
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const o = ctx.createOscillator(), g = ctx.createGain();
+      o.connect(g); g.connect(ctx.destination);
+      o.frequency.value = 880; g.gain.value = .12; o.start();
+      g.gain.exponentialRampToValueAtTime(.001, ctx.currentTime + .5);
+      o.stop(ctx.currentTime + .5);
+    }catch(e){}
+  },
+  lista(){
+    const arr = Object.values(DB.bookings);
+    const hoy = fechaStr(new Date());
+    const orden = (a,b) => (a.fecha + a.hora).localeCompare(b.fecha + b.hora);
+    if(this.tab === 'pendientes') return arr.filter(b => b.estado === 'pendiente').sort(orden);
+    if(this.tab === 'hoy') return arr.filter(b => b.fecha === hoy && b.estado !== 'cancelada').sort(orden);
+    return arr.filter(b => b.fecha > hoy && b.estado !== 'cancelada').sort(orden);
+  },
+  render(){
+    const list = $('#panelList');
+    const pend = Object.values(DB.bookings).filter(b => b.estado === 'pendiente').length;
+    const cnt = $('#cntPend'); cnt.hidden = pend === 0; cnt.textContent = pend;
+    const items = this.lista();
+    if(!items.length){ list.innerHTML = '<p class="p-empty">No hay nada aquí. De momento, todo tranquilo.</p>'; return; }
+    list.innerHTML = items.map(b => {
+      const f = b.fecha.split('-');
+      const fechaCorta = `${f[2]}/${f[1]}`;
+      const tel = b.telefono.replace(/^34(?=\d{9}$)/,'');
+      const waTel = /^34\d{9}$/.test(b.telefono) ? b.telefono : '34' + b.telefono.replace(/\D/g,'').slice(-9);
+      const esNueva = b.estado === 'pendiente' && b.creada > this.desde;
+      return `<article class="p-card ${b.estado}${esNueva ? ' fresh' : ''}" data-id="${b.id}">
+        <div class="p-top"><b>${b.servicioNombre} · ${b.precio} €</b><span class="pill ${b.estado}">${b.estado}</span></div>
+        <div class="p-meta"><strong>${b.nombre}</strong> · <a href="tel:+${waTel}">${b.telefono}</a>
+          <a href="https://wa.me/${waTel}?text=${encodeURIComponent('Hola '+b.nombre+', te escribo de Los Santos BarberStudio por tu cita del '+fechaCorta+' a las '+b.hora+'.')}" target="_blank" rel="noopener" style="margin-left:.5rem">WhatsApp</a></div>
+        <div class="p-meta">${b.barberoNombre} · ${fechaCorta} · ${b.hora} · ${b.codigo || ''}</div>
+        ${b.notas ? `<div class="p-meta">Notas: ${b.notas}</div>` : ''}
+        <div class="p-actions">
+          ${b.estado === 'pendiente' ? `<button class="p-btn ok" data-act="ok">Confirmar</button>` : ''}
+          <button class="p-btn" data-act="reprog">Cambiar hora</button>
+          ${b.estado !== 'cancelada' ? `<button class="p-btn danger" data-act="del">Cancelar</button>` : ''}
+        </div>
+        <div class="p-reprog" hidden>
+          <div class="f-field"><label>Día</label><select class="rp-dia"></select></div>
+          <div class="f-field"><label>Hora</label><select class="rp-hora"></select></div>
+          <button class="p-btn ok" data-act="save">Guardar</button>
+        </div>
+      </article>`;
+    }).join('');
+  }
+};
+
+$('#panelList').addEventListener('click', e => {
+  const btn = e.target.closest('[data-act]'); if(!btn) return;
+  const card = btn.closest('.p-card'), id = card.dataset.id, b = DB.bookings[id];
+  if(!b) return;
+  const act = btn.dataset.act;
+  if(act === 'ok') DB.updateBooking(id, {estado:'confirmada'});
+  if(act === 'del' && confirm(`¿Cancelar la cita de ${b.nombre} (${b.fecha} ${b.hora})?`))
+    DB.updateBooking(id, {estado:'cancelada'});
+  if(act === 'reprog'){
+    const box = card.querySelector('.p-reprog');
+    box.hidden = !box.hidden;
+    if(!box.hidden){
+      const selD = box.querySelector('.rp-dia'), selH = box.querySelector('.rp-hora');
+      const dias = listaDias().filter(d => huecosBarbero(b.barberoId, d, b.dur).length);
+      selD.innerHTML = dias.map((d,i) =>
+        `<option value="${i}"${fechaStr(d)===b.fecha?' selected':''}>${fmtFecha(d)}</option>`).join('');
+      selD._dias = dias;
+      const pintarHoras = () => {
+        const d = selD._dias[+selD.value];
+        const hs = huecosBarbero(b.barberoId, d, b.dur);
+        selH.innerHTML = hs.map(m => `<option value="${fmtMin(m)}"${fmtMin(m)===b.hora?' selected':''}>${fmtMin(m)}</option>`).join('')
+          || '<option value="">Sin huecos</option>';
+      };
+      selD.onchange = pintarHoras; pintarHoras();
+    }
+  }
+  if(act === 'save'){
+    const box = btn.closest('.p-reprog');
+    const d = box.querySelector('.rp-dia')._dias[+box.querySelector('.rp-dia').value];
+    const h = box.querySelector('.rp-hora').value;
+    if(d && h) DB.updateBooking(id, {fecha:fechaStr(d), hora:h});
+  }
+});
+
+/* ================= ROUTER (#panel) ================= */
+function route(){
+  const isPanel = location.hash === '#panel';
+  document.body.classList.toggle('panel-mode', isPanel);
+  $('#panelView').hidden = !isPanel;
+  if(isPanel){ Panel.init(); scrollTo(0,0); }
+}
+addEventListener('hashchange', route);
+
+/* ================= UI GENERAL ================= */
+document.getElementById('marqueeTrack').innerHTML += document.getElementById('marqueeTrack').innerHTML;
+
+const burger = document.getElementById('burger');
+const navLinks = document.getElementById('navLinks');
+burger.addEventListener('click', () => navLinks.classList.toggle('open'));
+navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+
+const header = document.getElementById('header');
+addEventListener('scroll', () => header.classList.toggle('scrolled', scrollY > 40), {passive:true});
+
+(function(){
+  const now = new Date(), day = now.getDay(), mins = now.getHours()*60 + now.getMinutes();
+  const tramos = HORARIO[day] || [];
+  const abierto = tramos.some(([a,c]) => mins >= a && mins < c);
+  const badge = document.getElementById('openBadge'), txt = document.getElementById('openText');
+  badge.classList.add(abierto ? 'open' : 'closed');
+  txt.textContent = abierto ? 'Abierto ahora · te esperamos' : 'Cerrado ahora · reserva tu cita online';
+  document.querySelectorAll('#hoursTable tr').forEach(tr => {
+    if (tr.dataset.day.split(',').includes(String(day))) tr.classList.add('today');
+  });
+})();
+
+const io = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); }
+}), {threshold:.12});
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+const secs = [...document.querySelectorAll('main section[id]')];
+const links = [...document.querySelectorAll('.nav-links a[href^="#"]')];
+addEventListener('scroll', () => {
+  const y = scrollY + 120;
+  let cur = secs[0] && secs[0].id;
+  secs.forEach(s => { if (s.offsetTop <= y) cur = s.id; });
+  links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + cur));
+}, {passive:true});
+
+document.getElementById('year').textContent = new Date().getFullYear();
+
+/* ================= ARRANQUE ================= */
+if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
+  addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(() => {}));
+}
+DB.init();
+initBooking();
+route();
+</script>
+</body>
+</html>
